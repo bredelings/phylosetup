@@ -9,7 +9,7 @@ apt-get install python-qt5
 (?) apt-get install libpyside-5.11
 mkvirtualenv enaml -p $(which python3) --system-site-packages
 workon phylosetup
-pip install enaml
+pip install enaml enamlx
 ```
 
 ## Running the program

@@ -1,8 +1,15 @@
+from enamlx.widgets.table_view import (
+    TableView, TableViewRow, TableViewItem
+)
 from enaml.layout.api import vertical, horizontal, align, spacer, vbox
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
     PushButton
 )
+
+from enaml.core.looper import Looper
+from enaml.widgets.menu import Menu
+from enaml.widgets.action import Action
 
 enamldef PartitionForm(Form):
     attr partition
@@ -26,6 +33,65 @@ enamldef PartitionForm(Form):
         text = 'Scale:'
     Field:
         text := partition.scale
+
+enamldef PartitionsTab(Window):
+    attr model
+    Container:
+        TableView: table:
+            minimum_size = (640,360)
+            horizontal_headers << ['Debug', 'Filename', 'Alphabet', 'Substitution', 'Indel', 'Scale']
+            horizontal_stretch = True
+            items << model.partitions
+
+            Looper:
+                #: Max number of visible rows
+                #: If this number is too small, stuff will get jacked
+                iterable << range(table.visible_rows)
+                TableViewRow:
+                    row << table.visible_row + loop_index
+                    attr partition << table.items[self.row]
+                    clicked :: print("Row %s clicked!"%self.row)
+
+                    Menu:
+                        Action:
+                            text << 'Row {} menu'.format(table.visible_row+loop_index)
+                            triggered :: 'Clicked row'
+
+                    TableViewItem:
+                        checkable = True
+                        checked := partition.debug
+                        toggled :: print("toggled %s"%self.row)
+#                        icon << partition.debug and load_icon('bug') or None
+                    TableViewItem:
+                        text := partition.filename
+                        clicked :: print("Clicked %s"%partition.filename)
+                        Menu:
+                            Action:
+                                text << 'Edit {} menu'.format(partition.filename)
+                                triggered :: 'Clicked edit'
+                    TableViewItem:
+                        text := partition.alphabet
+                        double_clicked :: print("Double clicked %s"%partition.alphabet)
+                        selected :: print("Selection %s is now %s"%(partition.alphabet,change['value']))
+                    TableViewItem:
+                        text := partition.substitution_model
+                        double_clicked :: print("Double clicked %s"%partition.substitution_model)
+                        selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
+                    TableViewItem:
+                        text := partition.indel_model
+                        double_clicked :: print("Double clicked %s"%partition.indel_model)
+                        selected :: print("Selection %s is now %s"%(partition.indel_model,change['value']))
+                    TableViewItem:
+                        text := partition.scale
+                        double_clicked :: print("Double clicked %s"%partition.scale)
+                        selected :: print("Selection %s is now %s"%(partition.scale,change['value']))
+        PushButton:
+            text = 'Add partition'
+            clicked :: model.add_partition()
+        PushButton:
+            text = 'Remove partition'
+            clicked :: model.remove_partition()
+
 
 enamldef PartitionView(Window):
     attr partition
