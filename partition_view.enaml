@@ -4,7 +4,7 @@ from enamlx.widgets.table_view import (
 from enaml.layout.api import vertical, horizontal, align, spacer, vbox
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
-    PushButton
+    PushButton, MainWindow, MenuBar
 )
 
 from enaml.core.looper import Looper
@@ -34,8 +34,14 @@ enamldef PartitionForm(Form):
     Field:
         text := partition.scale
 
-enamldef PartitionsTab(Window):
+enamldef PartitionsTab(MainWindow):
     attr model
+    MenuBar:
+        Menu:
+            title = "&File"
+            Action:
+                text = "Quit\tCtrl+Q"
+                triggered :: raise SystemExit(0)
     Container:
         TableView: table:
             minimum_size = (640,360)
