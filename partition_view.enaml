@@ -1,0 +1,33 @@
+from enaml.layout.api import vertical, horizontal, align, spacer, vbox
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton
+)
+
+enamldef PartitionForm(Form):
+    attr partition
+    Label:
+        text = 'Filename:'
+    Field:
+        text := partition.filename
+    Label:
+        text = 'Alphabet:'
+    Field:
+        text := partition.alphabet
+    Label:
+        text = 'Substitution model:'
+    Field:
+        text := partition.substitution_model
+    Label:
+        text = 'Indel model:'
+    Field:
+        text := partition.indel_model
+    Label:
+        text = 'Scale:'
+    Field:
+        text := partition.scale
+
+enamldef PartitionView(Window):
+    attr partition
+    PartitionForm:
+        partition := parent.partition
