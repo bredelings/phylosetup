@@ -4,7 +4,7 @@ from enamlx.widgets.table_view import (
 from enaml.layout.api import vertical, horizontal, align, spacer, vbox
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
-    PushButton, MainWindow, MenuBar
+    PushButton, MainWindow, MenuBar, Notebook, Page
 )
 
 from enaml.core.looper import Looper
@@ -34,14 +34,8 @@ enamldef PartitionForm(Form):
     Field:
         text := partition.scale
 
-enamldef PartitionsTab(MainWindow):
+enamldef PartitionsTab(Page):
     attr model
-    MenuBar:
-        Menu:
-            title = "&File"
-            Action:
-                text = "Quit\tCtrl+Q"
-                triggered :: raise SystemExit(0)
     Container:
         TableView: table:
             minimum_size = (640,360)
@@ -98,6 +92,30 @@ enamldef PartitionsTab(MainWindow):
             text = 'Remove partition'
             clicked :: model.remove_partition()
 
+
+enamldef ATModelNotebook(MainWindow):
+    attr model
+    MenuBar:
+        Menu:
+            title = "&File"
+            Action:
+                text = "Quit\tCtrl+Q"
+                triggered :: raise SystemExit(0)
+    Container:
+        attr model = parent.model
+        Notebook:
+            attr model = parent.model
+            tab_style = 'document'
+            PartitionsTab:
+                title = 'Partitions'
+                closable = False
+                tool_tip = 'Partition editor'
+                model = parent.model
+            Page:
+                title = 'Substitution'
+                closable = False
+                tool_tip = 'Substitution models'
+    
 
 enamldef PartitionView(Window):
     attr partition

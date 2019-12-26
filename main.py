@@ -64,12 +64,13 @@ def main():
     with enaml.imports():
         from partition_view import PartitionView
         from partition_view import PartitionsTab
+        from partition_view import ATModelNotebook
 
-    data_model = ATModel(partitions=[], smodels=[], imodels=[], scales=[])
+    at_model = ATModel(partitions=[], smodels=[], imodels=[], scales=[])
 
     app = QtApplication()
     # Create a view and show it.
-    view = PartitionsTab(model = data_model)
+    view = ATModelNotebook(model = at_model)
     view.show()
 
     app.start()
