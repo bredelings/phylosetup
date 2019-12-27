@@ -62,9 +62,7 @@ class ATModel(Atom):
 def main():
 
     with enaml.imports():
-        from partition_view import PartitionView
-        from partition_view import PartitionsTab
-        from partition_view import ATModelNotebook
+        from atmodel_notebook import ATModelNotebook
 
     at_model = ATModel(partitions=[], smodels=[], imodels=[], scales=[])
 

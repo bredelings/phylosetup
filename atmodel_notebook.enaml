@@ -1,0 +1,34 @@
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx
+)
+
+from enaml.core.looper import Looper
+from enaml.widgets.menu import Menu
+from enaml.widgets.action import Action
+
+from partition_view import PartitionsTab
+
+enamldef ATModelNotebook(MainWindow):
+    attr model
+    MenuBar:
+        Menu:
+            title = "&File"
+            Action:
+                text = "Quit\tCtrl+Q"
+                triggered :: raise SystemExit(0)
+    Container:
+        attr model = parent.model
+        Notebook:
+            attr model = parent.model
+            tab_style = 'document'
+            PartitionsTab:
+                title = 'Partitions'
+                closable = False
+                tool_tip = 'Partition editor'
+                model = parent.model
+            Page:
+                title = 'Substitution'
+                closable = False
+                tool_tip = 'Substitution models'
+    

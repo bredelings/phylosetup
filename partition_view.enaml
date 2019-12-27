@@ -96,30 +96,6 @@ enamldef PartitionsTab(Page):
             clicked :: model.remove_partition()
 
 
-enamldef ATModelNotebook(MainWindow):
-    attr model
-    MenuBar:
-        Menu:
-            title = "&File"
-            Action:
-                text = "Quit\tCtrl+Q"
-                triggered :: raise SystemExit(0)
-    Container:
-        attr model = parent.model
-        Notebook:
-            attr model = parent.model
-            tab_style = 'document'
-            PartitionsTab:
-                title = 'Partitions'
-                closable = False
-                tool_tip = 'Partition editor'
-                model = parent.model
-            Page:
-                title = 'Substitution'
-                closable = False
-                tool_tip = 'Substitution models'
-    
-
 enamldef PartitionView(Window):
     attr partition
     PartitionForm:
