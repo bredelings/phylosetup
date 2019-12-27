@@ -11,7 +11,73 @@ from enaml.core.looper import Looper
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
-from Bio import AlignIO
+from Bio import SeqIO
+
+from collections import defaultdict
+
+def letter_fraction(letters, unknown_string, sequences):
+    unknown_letters = set(letter for letter in unknown_string.upper())
+
+    counts = defaultdict(int)
+    total = 0
+    for record in sequences:
+        for letter in str(record.seq):
+            if letter not in unknown_letters:
+                counts[letter.upper()] += 1
+                total += 1
+
+    fractions = dict()
+    for letter in counts:
+        fractions[letter] = float(counts[letter])/total
+
+    total = 0.0
+    for letter in letters.upper():
+        if letter in fractions:
+            total += fractions[letter]
+
+    return total
+
+def letter_count(letters, sequences):
+    counts = defaultdict(int)
+    total = 0
+    for record in sequences:
+        for letter in str(record.seq):
+            counts[letter.upper()] += 1
+            total += 1
+
+    total = 0
+    for letter in letters.upper():
+        if letter in counts:
+            total += counts[letter]
+
+    return total
+
+def guess_alphabet(sequences):
+    ATGCN = letter_fraction("ATGCN","-?=",sequences)
+    AUGCN = letter_fraction("AUGCN","-?=",sequences)
+    AUTGCN = letter_fraction("AUTGCN","-?=",sequences)
+    if ATGCN > 0.95 and AUGCN <= ATGCN:
+        return "DNA"
+    elif AUGCN > 0.95:
+        return "RNA"
+
+    if AUTGCN > 0.95:
+        T = letter_fraction("T","-?=",sequences)
+        U = letter_fraction("U","-?=",sequences)
+        return None
+
+    digits = letter_fraction("0123456789","-?X=",sequences)
+    if digits > 0.95:
+        return "Numeric"
+
+    aa = letter_fraction("ARNDCQEGHILKMFPSTWYVX","-?=",sequences)
+    if letter_fraction("ARNDCQEGHILKMFPSTWYVX","-?=",sequences) > 0.9 and AUTGCN<0.5:
+        if letter_count("*",sequences) > 0:
+            return "Amino-Acids+stop"
+        else:
+            return "Amino-Acids"
+
+    return None
 
 enamldef PartitionsTab(Page):
     attr model
@@ -70,8 +136,11 @@ enamldef PartitionsTab(Page):
                 path = FileDialogEx.get_open_file_name(pb1)
                 if path:
                     try:
-                        alignment = AlignIO.read(path,format='fasta')
-                        model.add_partition(path)
+                        sequences = []
+                        for sequence in SeqIO.parse(path,format='fasta'):
+                            sequences.append(sequence)
+                        alphabet = guess_alphabet(sequences)
+                        model.add_partition(path, alphabet)
                     except Exception as e:
                         print(type(e))
                         print(e.args)

@@ -5,7 +5,6 @@ from atom.api import Atom, Str, Range, Bool, Value, Int, Tuple, observe, Contain
 import enaml
 from enaml.qt.qt_application import QtApplication
 
-
 class Partition(Atom):
     """ A simple class representing a partition in a phylogenetic analysis.
 
@@ -50,8 +49,8 @@ class ATModel(Atom):
     scales = ContainerList(ScaleModel)
 
     # branch_lengths = BranchLengthModel()
-    def add_partition(self, filename):
-        partition = Partition(filename = filename, alphabet = 'RNA', substitution_model = 'tn93', indel_model = 'rs07', scale = '~gamma[0.5,2]')
+    def add_partition(self, filename, alpha):
+        partition = Partition(filename = filename, alphabet = alpha, substitution_model = 'tn93', indel_model = 'rs07', scale = '~gamma[0.5,2]')
         self.partitions.append(partition)
 
     def remove_partition(self):
