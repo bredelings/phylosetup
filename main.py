@@ -15,7 +15,7 @@ class Partition(Atom):
 
     alphabet = Str()
 
-    substitution_model = Str()
+    substitution_model = Int()
 
     indel_model = Str()
 
@@ -50,7 +50,21 @@ class ATModel(Atom):
 
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, alpha):
-        partition = Partition(filename = filename, alphabet = alpha, substitution_model = 'tn93', indel_model = 'rs07', scale = '~gamma[0.5,2]')
+        smodel = None
+        if alpha == "DNA" or alpha == "RNA":
+            smodel = len(self.smodels)
+            self.smodels.append(SubstitutionModel(model='tn93',alphabet=alpha))
+        elif alpha == "Amino Acids":
+            smodel = len(self.smodels)
+            self.smodels.append(SubstitutionModel(model='lg08',alphabet=alpha))
+
+        imodel = len(self.imodels)
+        self.imodels.append(IndelModel(model='rs07'))
+
+        scale = len(self.scales)
+        self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
+
+        partition = Partition(filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = 'rs07', scale = '~gamma[0.5,2]')
         self.partitions.append(partition)
 
     def remove_partition(self):

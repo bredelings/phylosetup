@@ -73,9 +73,9 @@ def guess_alphabet(sequences):
     aa = letter_fraction("ARNDCQEGHILKMFPSTWYVX","-?=",sequences)
     if letter_fraction("ARNDCQEGHILKMFPSTWYVX","-?=",sequences) > 0.9 and AUTGCN<0.5:
         if letter_count("*",sequences) > 0:
-            return "Amino-Acids+stop"
+            return "Amino Acids + stop"
         else:
-            return "Amino-Acids"
+            return "Amino Acids"
 
     return None
 
@@ -107,6 +107,7 @@ enamldef PartitionsTab(Page):
                         checked := partition.debug
                         toggled :: print("toggled %s"%self.row)
 #                        icon << partition.debug and load_icon('bug') or None
+
                     TableViewItem:
                         text := partition.filename
                         clicked :: print("Clicked %s"%partition.filename)
@@ -114,18 +115,22 @@ enamldef PartitionsTab(Page):
                             Action:
                                 text << 'Edit {} menu'.format(partition.filename)
                                 triggered :: 'Clicked edit'
+
                     TableViewItem:
                         text := partition.alphabet
                         double_clicked :: print("Double clicked %s"%partition.alphabet)
                         selected :: print("Selection %s is now %s"%(partition.alphabet,change['value']))
+
                     TableViewItem:
-                        text := partition.substitution_model
+                        text << model.smodels[partition.substitution_model].model
                         double_clicked :: print("Double clicked %s"%partition.substitution_model)
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
+
                     TableViewItem:
                         text := partition.indel_model
                         double_clicked :: print("Double clicked %s"%partition.indel_model)
                         selected :: print("Selection %s is now %s"%(partition.indel_model,change['value']))
+
                     TableViewItem:
                         text := partition.scale
                         double_clicked :: print("Double clicked %s"%partition.scale)
