@@ -4,7 +4,7 @@ from enamlx.widgets.table_view import (
 from enaml.layout.api import vertical, horizontal, align, spacer, vbox
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
-    PushButton, MainWindow, MenuBar, Notebook, Page
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx
 )
 
 from enaml.core.looper import Looper
@@ -85,9 +85,12 @@ enamldef PartitionsTab(Page):
                         text := partition.scale
                         double_clicked :: print("Double clicked %s"%partition.scale)
                         selected :: print("Selection %s is now %s"%(partition.scale,change['value']))
-        PushButton:
+        PushButton: pb1:
             text = 'Add partition'
-            clicked :: model.add_partition()
+            clicked ::
+                path = FileDialogEx.get_open_file_name(pb1)
+                if path:
+                    model.add_partition(path)
         PushButton:
             text = 'Remove partition'
             clicked :: model.remove_partition()

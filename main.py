@@ -50,8 +50,8 @@ class ATModel(Atom):
     scales = ContainerList(ScaleModel)
 
     # branch_lengths = BranchLengthModel()
-    def add_partition(self):
-        partition = Partition(filename = '25-muscle.fasta', alphabet = 'RNA', substitution_model = 'tn93', indel_model = 'rs07', scale = '~gamma[0.5,2]')
+    def add_partition(self, filename):
+        partition = Partition(filename = filename, alphabet = 'RNA', substitution_model = 'tn93', indel_model = 'rs07', scale = '~gamma[0.5,2]')
         self.partitions.append(partition)
 
     def remove_partition(self):
