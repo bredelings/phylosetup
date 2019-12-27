@@ -11,29 +11,6 @@ from enaml.core.looper import Looper
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
-enamldef PartitionForm(Form):
-    attr partition
-    Label:
-        text = 'Filename:'
-    Field:
-        text := partition.filename
-    Label:
-        text = 'Alphabet:'
-    Field:
-        text := partition.alphabet
-    Label:
-        text = 'Substitution model:'
-    Field:
-        text := partition.substitution_model
-    Label:
-        text = 'Indel model:'
-    Field:
-        text := partition.indel_model
-    Label:
-        text = 'Scale:'
-    Field:
-        text := partition.scale
-
 enamldef PartitionsTab(Page):
     attr model
     Container:
@@ -94,9 +71,3 @@ enamldef PartitionsTab(Page):
         PushButton:
             text = 'Remove partition'
             clicked :: model.remove_partition()
-
-
-enamldef PartitionView(Window):
-    attr partition
-    PartitionForm:
-        partition := parent.partition

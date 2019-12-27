@@ -7,7 +7,7 @@ from enaml.core.looper import Looper
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
-from partition_view import PartitionsTab
+from partitions_tab import PartitionsTab
 
 enamldef ATModelNotebook(MainWindow):
     attr model
