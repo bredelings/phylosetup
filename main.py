@@ -17,9 +17,9 @@ class Partition(Atom):
 
     substitution_model = Int()
 
-    indel_model = Str()
+    indel_model = Int()
 
-    scale = Str()
+    scale_model = Int()
 
 class SubstitutionModel(Atom):
     model = Str()
@@ -64,7 +64,7 @@ class ATModel(Atom):
         scale = len(self.scales)
         self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
 
-        partition = Partition(filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = 'rs07', scale = '~gamma[0.5,2]')
+        partition = Partition(filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
         self.partitions.append(partition)
 
     def remove_partition(self):

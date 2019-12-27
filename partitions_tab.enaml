@@ -127,14 +127,14 @@ enamldef PartitionsTab(Page):
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
 
                     TableViewItem:
-                        text := partition.indel_model
+                        text << model.imodels[partition.indel_model].model
                         double_clicked :: print("Double clicked %s"%partition.indel_model)
                         selected :: print("Selection %s is now %s"%(partition.indel_model,change['value']))
 
                     TableViewItem:
-                        text := partition.scale
-                        double_clicked :: print("Double clicked %s"%partition.scale)
-                        selected :: print("Selection %s is now %s"%(partition.scale,change['value']))
+                        text << model.scales[partition.scale_model].model
+                        double_clicked :: print("Double clicked %s"%partition.scale_model)
+                        selected :: print("Selection %s is now %s"%(partition.scale_model,change['value']))
         PushButton: pb1:
             text = 'Add partition'
             clicked ::
