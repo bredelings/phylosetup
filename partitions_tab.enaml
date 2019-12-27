@@ -15,6 +15,9 @@ from Bio import SeqIO
 
 from collections import defaultdict
 
+from os import path
+
+
 def letter_fraction(letters, unknown_string, sequences):
     unknown_letters = set(letter for letter in unknown_string.upper())
 
@@ -109,7 +112,7 @@ enamldef PartitionsTab(Page):
 #                        icon << partition.debug and load_icon('bug') or None
 
                     TableViewItem:
-                        text := partition.filename
+                        text << path.basename( partition.filename )
                         clicked :: print("Clicked %s"%partition.filename)
                         Menu:
                             Action:
