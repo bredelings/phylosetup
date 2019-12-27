@@ -11,6 +11,8 @@ from enaml.core.looper import Looper
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
+from Bio import AlignIO
+
 enamldef PartitionsTab(Page):
     attr model
     Container:
@@ -67,7 +69,14 @@ enamldef PartitionsTab(Page):
             clicked ::
                 path = FileDialogEx.get_open_file_name(pb1)
                 if path:
-                    model.add_partition(path)
+                    try:
+                        alignment = AlignIO.read(path,format='fasta')
+                        model.add_partition(path)
+                    except Exception as e:
+                        print(type(e))
+                        print(e.args)
+                        print(e)
+
         PushButton:
             text = 'Remove partition'
             clicked :: model.remove_partition()
