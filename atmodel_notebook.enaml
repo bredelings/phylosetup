@@ -9,21 +9,8 @@ from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
 from partitions_tab import PartitionsTab
-from smodel_view import SubstitutionModelView
+from substitution_models_tab import SubstitutionModelsTab
 
-
-enamldef SubstitutionModelsTab(Page):
-    Container:
-        VGroup:
-            Label:
-                text = 'Substitution Models'
-            ObjectCombo: combo:
-                items << [index for index in range(len(model.smodels))]
-                to_string = lambda index: model.get_substitution_model_name(index)
-            Conditional:
-                condition << combo.selected is not None
-                SubstitutionModelView:
-                     smodel << model.smodels[combo.selected]
 
 enamldef ATModelNotebook(MainWindow):
     attr model
