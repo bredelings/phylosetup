@@ -38,6 +38,9 @@ class Alphabet(Atom):
 class BranchLengthModel(Atom):
     model = Str()
 
+class TaxonSet(Atom):
+    taxa = ContainerList(Str)
+
 class ATModel(Atom):
     """A collection of partitions that can share models
 
@@ -47,6 +50,7 @@ class ATModel(Atom):
     smodels = ContainerList(SubstitutionModel)
     imodels = ContainerList(IndelModel)
     scales = ContainerList(ScaleModel)
+    taxon_set = TaxonSet()
 
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, alpha):
