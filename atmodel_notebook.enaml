@@ -9,18 +9,21 @@ from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
 from partitions_tab import PartitionsTab
+from smodel_view import SubstitutionModelView
 
-enamldef SubstitutionModelView(Form):
-    attr smodel
-    Label:
-        text = 'Name'
-    Field:
-        text := smodel.name
-    Label:
-        text = 'Model'
-    Field:
-        text := smodel.model
 
+enamldef SubstitutionModelsTab(Page):
+    Container:
+        VGroup:
+            Label:
+                text = 'Substitution Models'
+            ObjectCombo: combo:
+                items << [index for index in range(len(model.smodels))]
+                to_string = lambda index: model.get_substitution_model_name(index)
+            Conditional:
+                condition << combo.selected is not None
+                SubstitutionModelView:
+                     smodel << model.smodels[combo.selected]
 
 enamldef ATModelNotebook(MainWindow):
     attr model
@@ -41,19 +44,7 @@ enamldef ATModelNotebook(MainWindow):
                 closable = False
                 tool_tip = 'Partition editor'
                 model = parent.model
-            Page:
+            SubstitutionModelsTab:
                 title = 'Substitution'
                 closable = False
                 tool_tip = 'Substitution models'
-                Container:
-                    VGroup:
-                        Label:
-                            text = 'Substitution Models'
-                        ObjectCombo: combo:
-                            items << [index for index in range(len(model.smodels))]
-                            to_string = lambda index: model.get_substitution_model_name(index)
-                    Conditional:
-                       condition << combo.selected is not None
-                       SubstitutionModelView:
-                           smodel << model.smodels[combo.selected]
-    
