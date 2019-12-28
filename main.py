@@ -28,14 +28,20 @@ class Partition(Atom):
     scale_model = Int()
 
 class SubstitutionModel(Atom):
+    name = Str()
+
     model = Str()
 
     alphabet = Str()
 
 class IndelModel(Atom):
+    name = Str()
+
     model = Str()
 
 class ScaleModel(Atom):
+    name = Str()
+
     model = Str()
 
 class Alphabet(Atom):
