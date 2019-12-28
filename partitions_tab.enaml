@@ -125,7 +125,7 @@ enamldef PartitionsTab(Page):
                         selected :: print("Selection %s is now %s"%(partition.alphabet,change['value']))
 
                     TableViewItem:
-                        text << model.smodels[partition.substitution_model].model
+                        text << model.get_substitution_model_name(partition.substitution_model)
                         double_clicked :: print("Double clicked %s"%partition.substitution_model)
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
 
