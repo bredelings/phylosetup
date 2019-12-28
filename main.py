@@ -69,6 +69,8 @@ class ATModel(Atom):
         smodel = None
         if alpha == "DNA" or alpha == "RNA":
             smodel = len(self.smodels)
+            # We could in theory refuse to pick a substitution model, but then we are delegating to bali-phy
+            # what the priors would be
             self.smodels.append(SubstitutionModel(model='tn93',alphabet=alpha))
         elif alpha == "Amino Acids":
             smodel = len(self.smodels)
