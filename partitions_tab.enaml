@@ -141,6 +141,8 @@ enamldef PartitionsTab(Page):
         PushButton: pb1:
             text = 'Add partition'
             clicked ::
+                # How do we open a dialog with the design below, when we click this button?
+                # How can we modularize this a bit?
                 path = FileDialogEx.get_open_file_name(pb1)
                 if path:
                     try:
@@ -148,6 +150,8 @@ enamldef PartitionsTab(Page):
                         for sequence in SeqIO.parse(path,format='fasta'):
                             sequences.append(sequence)
                         alphabet = guess_alphabet(sequences)
+                        # FIXME: really we should let the use check this:
+                        # [ File: [chosen name]  Alphabet: [DNA]  Sites: [all] ]
                         model.add_partition(path, alphabet)
                     except Exception as e:
                         print(type(e))
