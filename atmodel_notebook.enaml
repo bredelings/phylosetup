@@ -31,7 +31,9 @@ enamldef ATModelNotebook(MainWindow):
                 closable = False
                 tool_tip = 'Partition editor'
                 model = parent.model
-            SubstitutionModelsTab:
-                title = 'Substitution'
-                closable = False
-                tool_tip = 'Substitution models'
+            Conditional:
+                condition << len(model.smodels) > 0
+                SubstitutionModelsTab:
+                    title = 'Substitution'
+                    closable = False
+                    tool_tip = 'Substitution models'
