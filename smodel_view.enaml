@@ -1,0 +1,18 @@
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+
+enamldef SubstitutionModelView(Form):
+    attr smodel
+    Label:
+        text = 'Name'
+    Field:
+        text := smodel.name
+    Label:
+        text = 'Model'
+    Field:
+        text := smodel.model
+
+
