@@ -1,3 +1,5 @@
+import os.path
+
 from enaml.core.api import Conditional, Looper
 
 from enaml.widgets.api import (
@@ -7,14 +9,23 @@ from enaml.widgets.api import (
 
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
+from enaml.icon import Icon, IconImage
+from enaml.image import Image
 
 from partitions_tab import PartitionsTab
 from substitution_models_tab import SubstitutionModelsTab
 
+def load_icon(path):
+        with open(path, 'rb') as f:
+                data = f.read()
+        img = Image(data=data)
+        icg = IconImage(image=img)
+        return Icon(images=[icg])
 
 enamldef ATModelNotebook(MainWindow):
     attr model
     title = "Phylosetup"
+    icon = load_icon('icon.svg')
     MenuBar:
         Menu:
             title = "&File"
