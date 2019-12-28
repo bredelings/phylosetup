@@ -64,6 +64,13 @@ class ATModel(Atom):
     scales = ContainerList(ScaleModel)
     taxon_set = TaxonSet()
 
+    def get_substitution_model_name(self,index):
+        if self.smodels[index].name:
+            print("using the name {}".format(self.smodels[index].name))
+            return self.smodels[index].name
+        else:
+            return 'S{}'.format(index+1)
+
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, alpha):
         smodel = None
