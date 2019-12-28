@@ -9,6 +9,12 @@ class Partition(Atom):
     """ A simple class representing a partition in a phylogenetic analysis.
 
     """
+    # FIXME: what about number of sites?
+    # FIXME: what about "are we aligned"?
+    # FIXME: what about "is the alignment fixed or estimated?"
+    # FIXME: what about "how many taxa?"
+    # Some of these things can be computed from atmodel and shown in the table
+
     filename = Str()
 
     debug = Bool(False)
