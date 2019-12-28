@@ -1,13 +1,26 @@
+from enaml.core.api import Conditional, Looper
+
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
-    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
 )
 
-from enaml.core.looper import Looper
 from enaml.widgets.menu import Menu
 from enaml.widgets.action import Action
 
 from partitions_tab import PartitionsTab
+
+enamldef SubstitutionModelView(Form):
+    attr smodel
+    Label:
+        text = 'Name'
+    Field:
+        text := smodel.name
+    Label:
+        text = 'Model'
+    Field:
+        text := smodel.model
+
 
 enamldef ATModelNotebook(MainWindow):
     attr model
@@ -32,4 +45,15 @@ enamldef ATModelNotebook(MainWindow):
                 title = 'Substitution'
                 closable = False
                 tool_tip = 'Substitution models'
+                Container:
+                    VGroup:
+                        Label:
+                            text = 'Substitution Models'
+                        ObjectCombo: combo:
+                            items << [index for index in range(len(model.smodels))]
+                            to_string = lambda index: model.get_substitution_model_name(index)
+                    Conditional:
+                       condition << combo.selected is not None
+                       SubstitutionModelView:
+                           smodel << model.smodels[combo.selected]
     
