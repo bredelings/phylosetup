@@ -11,6 +11,7 @@ from partitions_tab import PartitionsTab
 
 enamldef ATModelNotebook(MainWindow):
     attr model
+    title = "Phylosetup"
     MenuBar:
         Menu:
             title = "&File"
