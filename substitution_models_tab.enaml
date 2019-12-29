@@ -1,3 +1,6 @@
+from enamlx.widgets.table_view import (
+    TableView, TableViewRow, TableViewItem
+)
 from enaml.core.api import Conditional, Looper
 
 from enaml.widgets.api import (
@@ -11,10 +14,26 @@ from enaml.widgets.action import Action
 from partitions_tab import PartitionsTab
 from smodel_view import SubstitutionModelView
 
+from enaml.layout.api import grid, hbox, spacer
 
 enamldef SubstitutionModelsTab(Page):
     Container:
-        VGroup:
+        constraints = [ hbox(table,vg) ]
+        TableView: table:
+            horizontal_headers = ['Substitution models']
+            horizontal_stretch = True
+            items << [i for i in range(len(model.smodels))]
+
+            Looper:
+                #: Max number of visible rows
+                #: If this number is too small, stuff will get jacked
+                iterable << range(table.visible_rows)
+                TableViewRow:
+                    row << table.visible_row + loop_index
+                    TableViewItem:
+                        text << model.get_substitution_model_name(table.visible_row + loop_index)
+                        selected :: print('Selection {} is now {}'.format(table.visible_row+loop_index,change['value']))
+        VGroup: vg:
             Label:
                 text = 'Substitution Models'
             ObjectCombo: combo:
