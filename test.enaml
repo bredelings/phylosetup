@@ -1,0 +1,80 @@
+from enaml.core.api import Conditional, Looper
+
+from atom.api import Atom, Str, Range, Bool, Value, Int, Tuple, observe, ContainerList
+
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+from enaml.widgets.menu import Menu
+from enaml.widgets.action import Action
+
+class Partition(Atom):
+    substitution_model = Int()
+
+class SubstitutionModel(Atom):
+    name = Str()
+
+    model = Str()
+
+class ATModel(Atom):
+    """A collection of partitions that can share models
+
+    """
+
+    partitions = ContainerList(Partition)
+    smodels = ContainerList(SubstitutionModel)
+
+    def get_substitution_model_name(self,index):
+        print(f'get substitution model name {index}')
+        if self.smodels[index].name:
+            print("using the name {}".format(self.smodels[index].name))
+            return self.smodels[index].name
+        else:
+            print("no name: using the name S{}".format(index))
+            return 'S{}'.format(index+1)
+
+    # branch_lengths = BranchLengthModel()
+    def add_partition(self):
+        smodel = len(self.smodels)
+        self.smodels.append(SubstitutionModel(model='tn93'))
+        
+        partition = Partition(substitution_model = smodel)
+        self.partitions.append(partition)
+
+    def remove_partition(self):
+        if len(self.partitions) > 0:
+            self.partitions.pop()
+
+enamldef SubstitutionModelView(Form):
+    attr smodel
+    Label:
+        text = 'Name'
+    Field:
+        text := smodel.name
+    Label:
+        text = 'Model'
+    Field:
+        text := smodel.model
+
+
+enamldef Main(Window):
+    attr model = ATModel()
+    Container:
+        PushButton:
+            text = 'Add partition'
+            clicked :: model.add_partition()
+        PushButton:
+            text = 'Remove partition'
+            clicked :: model.remove_partition()
+        Label:
+            text = 'Substitution Models'
+        ObjectCombo: combo:
+            items << [index for index in range(len(model.smodels))]
+            to_string = lambda index: model.get_substitution_model_name(index)
+        Conditional:
+            condition << combo.selected is not None
+            SubstitutionModelView:
+                 smodel := model.smodels[combo.selected]
+
