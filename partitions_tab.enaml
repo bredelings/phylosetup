@@ -87,7 +87,7 @@ enamldef PartitionsTab(Page):
     Container:
         TableView: table:
             minimum_size = (640,360)
-            horizontal_headers << ['Debug', 'Filename', 'Alphabet', 'Substitution', 'Indel', 'Scale']
+            horizontal_headers << ['Filename', 'Alphabet', 'Substitution', 'Indel', 'Scale']
             horizontal_stretch = True
             show_vertical_header = False
             items << model.partitions
@@ -105,12 +105,6 @@ enamldef PartitionsTab(Page):
                         Action:
                             text << 'Row {} menu'.format(table.visible_row+loop_index)
                             triggered :: 'Clicked row'
-
-                    TableViewItem:
-                        checkable = True
-                        checked := partition.debug
-                        toggled :: print("toggled %s"%self.row)
-#                        icon << partition.debug and load_icon('bug') or None
 
                     TableViewItem:
                         text << path.basename( partition.filename )
