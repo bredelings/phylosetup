@@ -15,36 +15,15 @@ from partitions_tab import PartitionsTab
 from smodel_view import SubstitutionModelView
 from qt_list_str_widget import QtListStrWidget
 
-from enaml.layout.api import grid, hbox, spacer
+from enaml.layout.api import grid, hbox, vbox, spacer
 
 enamldef SubstitutionModelsTab(Page):
     Container:
-        constraints = [ hbox(li,table,vg) ]
+        constraints = [ hbox(li,vbox(smv,spacer(0))) ]
         QtListStrWidget: li:
-            items << [model.get_substitution_model_name(i) for i in range(len(model.smodels))]
-        TableView: table:
-            horizontal_headers = ['Substitution models']
-            horizontal_stretch = True
-            show_vertical_header = False
-            items << [i for i in range(len(model.smodels))]
-
-            Looper:
-                #: Max number of visible rows
-                #: If this number is too small, stuff will get jacked
-                iterable << range(table.visible_rows)
-                TableViewRow:
-                    row << table.visible_row + loop_index
-                    TableViewItem:
-                        text << model.get_substitution_model_name(table.visible_row + loop_index)
-                        selected :: print('Selection {} is now {}'.format(table.visible_row+loop_index,change['value']))
-        VGroup: vg:
-            Label:
-                text = 'Substitution Models'
-            ObjectCombo: combo:
-                items << [index for index in range(len(model.smodels))]
-                to_string = lambda index: model.get_substitution_model_name(index)
-            Conditional:
-                condition << combo.selected is not None
-                SubstitutionModelView:
-                     smodel << model.smodels[combo.selected]
+            items << [index for index in range(len(model.smodels))]
+            to_string << lambda index : model.get_substitution_model_name(index)
+            sort = False
+        SubstitutionModelView: smv:
+            smodel := model.smodels[li.selected_item]
 
