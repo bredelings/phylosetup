@@ -13,12 +13,15 @@ from enaml.widgets.action import Action
 
 from partitions_tab import PartitionsTab
 from smodel_view import SubstitutionModelView
+from qt_list_str_widget import QtListStrWidget
 
 from enaml.layout.api import grid, hbox, spacer
 
 enamldef SubstitutionModelsTab(Page):
     Container:
-        constraints = [ hbox(table,vg) ]
+        constraints = [ hbox(li,table,vg) ]
+        QtListStrWidget: li:
+            items << [model.get_substitution_model_name(i) for i in range(len(model.smodels))]
         TableView: table:
             horizontal_headers = ['Substitution models']
             horizontal_stretch = True
