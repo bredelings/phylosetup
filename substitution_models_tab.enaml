@@ -22,6 +22,7 @@ enamldef SubstitutionModelsTab(Page):
         TableView: table:
             horizontal_headers = ['Substitution models']
             horizontal_stretch = True
+            show_vertical_header = False
             items << [i for i in range(len(model.smodels))]
 
             Looper:

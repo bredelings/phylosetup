@@ -89,6 +89,7 @@ enamldef PartitionsTab(Page):
             minimum_size = (640,360)
             horizontal_headers << ['Debug', 'Filename', 'Alphabet', 'Substitution', 'Indel', 'Scale']
             horizontal_stretch = True
+            show_vertical_header = False
             items << model.partitions
 
             Looper:
