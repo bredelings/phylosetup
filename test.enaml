@@ -70,11 +70,13 @@ enamldef Main(Window):
             clicked :: model.remove_partition()
         Label:
             text = 'Substitution Models'
-        ObjectCombo: combo:
-            items << [index for index in range(len(model.smodels))]
-            to_string = lambda index: model.get_substitution_model_name(index)
         Conditional:
-            condition << combo.selected is not None
-            SubstitutionModelView:
-                 smodel := model.smodels[combo.selected]
+            condition << len(model.smodels) > 0
+            ObjectCombo: combo:
+               items << [index for index in range(len(model.smodels))]
+               to_string = lambda index: model.get_substitution_model_name(index)
+            Conditional:
+               condition << combo.selected is not None
+               SubstitutionModelView:
+                    smodel := model.smodels[combo.selected]
 
