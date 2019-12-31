@@ -87,7 +87,7 @@ enamldef PartitionsTab(Page):
     Container:
         TableView: table:
             minimum_size = (640,360)
-            horizontal_headers << ['Filename', 'Alphabet', 'Substitution', 'Indel', 'Scale']
+            horizontal_headers << ['Filename', 'Fixed', 'Alphabet', 'Substitution', 'Indel', 'Scale']
             horizontal_stretch = True
             show_vertical_header = False
             items << model.partitions
@@ -113,6 +113,12 @@ enamldef PartitionsTab(Page):
                             Action:
                                 text << 'Edit {} menu'.format(partition.filename)
                                 triggered :: 'Clicked edit'
+
+                    TableViewItem:
+                        CheckBox:
+                            checked := partition.fixed_alignment
+                        double_clicked :: print("Double clicked %s"%partition.fixed_alignment)
+                        selected :: print("Selection %s is now %s"%(partition.fixed_alignment,change['value']))
 
                     TableViewItem:
                         text := partition.alphabet

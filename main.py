@@ -21,6 +21,8 @@ class Partition(Atom):
 
     debug = Bool(False)
 
+    fixed_alignment = Bool(False)
+
     alphabet = Str()
 
     substitution_model = Int()
