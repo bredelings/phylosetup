@@ -10,6 +10,7 @@ enamldef SubstitutionModelView(Form):
         text = 'Name'
     Field:
         text := smodel.name
+        placeholder = 'Model name'
     Label:
         text = 'Model'
     Field:
