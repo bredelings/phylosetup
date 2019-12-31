@@ -87,7 +87,7 @@ enamldef PartitionsTab(Page):
     Container:
         TableView: table:
             minimum_size = (640,360)
-            horizontal_headers << ['Filename', 'Fixed', 'Alphabet', 'Substitution', 'Indel', 'Scale']
+            horizontal_headers << ['Filename', 'Fixed', 'Alphabet', '#Taxa', 'Substitution', 'Indel', 'Scale']
             horizontal_stretch = True
             show_vertical_header = False
             items << model.partitions
@@ -126,6 +126,9 @@ enamldef PartitionsTab(Page):
                         selected :: print("Selection %s is now %s"%(partition.alphabet,change['value']))
 
                     TableViewItem:
+                        text << str(len(partition.sequences))
+
+                    TableViewItem:
                         text << model.get_substitution_model_name(partition.substitution_model)
                         double_clicked :: print("Double clicked %s"%partition.substitution_model)
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
@@ -153,7 +156,7 @@ enamldef PartitionsTab(Page):
                         alphabet = guess_alphabet(sequences)
                         # FIXME: really we should let the use check this:
                         # [ File: [chosen name]  Alphabet: [DNA]  Sites: [all] ]
-                        model.add_partition(path, alphabet)
+                        model.add_partition(path, sequences, alphabet)
                     except Exception as e:
                         print(type(e))
                         print(e.args)

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+
+import Bio.SeqRecord
+
 import enamlx
 enamlx.install()
 
@@ -16,6 +19,8 @@ class Partition(Atom):
     # FIXME: what about "is the alignment fixed or estimated?"
     # FIXME: what about "how many taxa?"
     # Some of these things can be computed from atmodel and shown in the table
+
+    sequences = ContainerList(Bio.SeqRecord.SeqRecord)
 
     filename = Str()
 
@@ -76,7 +81,7 @@ class ATModel(Atom):
             return 'S{}'.format(index+1)
 
     # branch_lengths = BranchLengthModel()
-    def add_partition(self, filename, alpha):
+    def add_partition(self, filename, sequences, alpha):
         smodel = None
         if alpha == "DNA" or alpha == "RNA":
             smodel = len(self.smodels)
@@ -93,7 +98,7 @@ class ATModel(Atom):
         scale = len(self.scales)
         self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
 
-        partition = Partition(filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
+        partition = Partition(sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
         self.partitions.append(partition)
 
     def remove_partition(self):
