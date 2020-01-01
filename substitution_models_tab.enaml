@@ -21,8 +21,8 @@ enamldef SubstitutionModelsTab(Page):
     Container:
         constraints = [ hbox(li,vbox(smv,spacer(0))) ]
         QtListStrWidget: li:
-            items << [index for index in range(len(model.smodels))]
-            to_string << lambda index : model.get_substitution_model_name(index)
+            items << [index for index in range(len(model.smodels))] if model.smodels else []
+            to_string << lambda index : 'S{}'.format(index+1)
             sort = False
         SubstitutionModelView: smv:
             smodel := model.smodels[li.selected_item]

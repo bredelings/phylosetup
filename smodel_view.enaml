@@ -7,11 +7,6 @@ from enaml.widgets.api import (
 enamldef SubstitutionModelView(Form):
     attr smodel
     Label:
-        text = 'Name'
-    Field:
-        text := smodel.name
-        placeholder = 'Model name'
-    Label:
         text = 'Model'
     Field:
         text := smodel.model

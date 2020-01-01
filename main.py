@@ -20,8 +20,6 @@ class Partition(Atom):
     # FIXME: what about "how many taxa?"
     # Some of these things can be computed from atmodel and shown in the table
 
-    name = Str()
-
     sequences = ContainerList(Bio.SeqRecord.SeqRecord)
 
     filename = Str()
@@ -39,20 +37,14 @@ class Partition(Atom):
     scale_model = Int()
 
 class SubstitutionModel(Atom):
-    name = Str()
-
     model = Str()
 
     alphabet = Str()
 
 class IndelModel(Atom):
-    name = Str()
-
     model = Str()
 
 class ScaleModel(Atom):
-    name = Str()
-
     model = Str()
 
 class Alphabet(Atom):
@@ -75,13 +67,6 @@ class ATModel(Atom):
     scales = ContainerList(ScaleModel)
     taxon_set = TaxonSet()
 
-    def get_substitution_model_name(self,index):
-        if self.smodels[index].name:
-            print("using the name {}".format(self.smodels[index].name))
-            return self.smodels[index].name
-        else:
-            return 'S{}'.format(index+1)
-
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, sequences, alpha):
         smodel = None
@@ -94,15 +79,13 @@ class ATModel(Atom):
             smodel = len(self.smodels)
             self.smodels.append(SubstitutionModel(model='lg08',alphabet=alpha))
 
-        name = path.splitext(path.basename( filename ))[0]
-
         imodel = len(self.imodels)
         self.imodels.append(IndelModel(model='rs07'))
 
         scale = len(self.scales)
         self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
 
-        partition = Partition(name = name, sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
+        partition = Partition(sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
         self.partitions.append(partition)
 
     def remove_partition(self):
