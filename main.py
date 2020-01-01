@@ -20,6 +20,8 @@ class Partition(Atom):
     # FIXME: what about "how many taxa?"
     # Some of these things can be computed from atmodel and shown in the table
 
+    name = Str()
+
     sequences = ContainerList(Bio.SeqRecord.SeqRecord)
 
     filename = Str()
@@ -37,6 +39,8 @@ class Partition(Atom):
     scale_model = Int()
 
 class SubstitutionModel(Atom):
+    name = Str()
+
     model = Str()
 
     alphabet = Str()
@@ -70,14 +74,15 @@ class ATModel(Atom):
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, sequences, alpha):
         smodel = None
+        sname = 'S{}'.format(len(self.smodels)+1)
         if alpha == "DNA" or alpha == "RNA":
             smodel = len(self.smodels)
             # We could in theory refuse to pick a substitution model, but then we are delegating to bali-phy
             # what the priors would be
-            self.smodels.append(SubstitutionModel(model='tn93',alphabet=alpha))
+            self.smodels.append(SubstitutionModel(name = sname, model='tn93',alphabet=alpha))
         elif alpha == "Amino Acids":
             smodel = len(self.smodels)
-            self.smodels.append(SubstitutionModel(model='lg08',alphabet=alpha))
+            self.smodels.append(SubstitutionModel(name = sname, model='lg08',alphabet=alpha))
 
         imodel = len(self.imodels)
         self.imodels.append(IndelModel(model='rs07'))
@@ -85,7 +90,8 @@ class ATModel(Atom):
         scale = len(self.scales)
         self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
 
-        partition = Partition(sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
+        pname = 'P{}'.format(len(self.partitions)+1)
+        partition = Partition(name = pname, sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
         self.partitions.append(partition)
 
     def remove_partition(self):
