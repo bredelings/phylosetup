@@ -1,0 +1,28 @@
+from enamlx.widgets.table_view import (
+    TableView, TableViewRow, TableViewItem
+)
+from enaml.core.api import Conditional, Looper
+
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+from enaml.widgets.menu import Menu
+from enaml.widgets.action import Action
+
+from scale_view import ScaleView
+from qt_list_str_widget import QtListStrWidget
+
+from enaml.layout.api import grid, hbox, vbox, spacer
+
+enamldef ScalesTab(Page):
+    Container:
+        constraints = [ hbox(li,vbox(sv,spacer(0))) ]
+        QtListStrWidget: li:
+            items << [index for index in range(len(model.scales))] if model.scales else []
+            to_string << lambda index : 'I{}'.format(index+1)
+            sort = False
+        ScaleView: sv:
+            scale := model.scales[li.selected_item]
+
