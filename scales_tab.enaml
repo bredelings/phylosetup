@@ -21,7 +21,7 @@ enamldef ScalesTab(Page):
         constraints = [ hbox(li,vbox(sv,spacer(0))) ]
         QtListStrWidget: li:
             items << [index for index in range(len(model.scales))] if model.scales else []
-            to_string << lambda index : 'I{}'.format(index+1)
+            to_string << lambda index : 'R{}'.format(index+1)
             sort = False
         ScaleView: sv:
             scale := model.scales[li.selected_item]
