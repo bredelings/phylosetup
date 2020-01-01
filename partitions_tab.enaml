@@ -4,7 +4,7 @@ from enamlx.widgets.table_view import (
 from enaml.layout.api import vertical, horizontal, align, spacer, vbox
 from enaml.widgets.api import (
     Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
-    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ComboBox
 )
 
 from enaml.core.looper import Looper
@@ -138,7 +138,9 @@ enamldef PartitionsTab(Page):
                         text << str(len(partition.sequences))
 
                     TableViewItem:
-                        text << model.smodels[partition.substitution_model].name
+                        ComboBox:
+                           items << [smodel.name for smodel in model.smodels]
+                           index := partition.substitution_model
                         double_clicked :: print("Double clicked %s"%partition.substitution_model)
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
 
