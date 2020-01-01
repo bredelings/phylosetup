@@ -14,6 +14,7 @@ from enaml.image import Image
 
 from partitions_tab import PartitionsTab
 from substitution_models_tab import SubstitutionModelsTab
+from indel_models_tab import IndelModelsTab
 
 def load_icon(path):
         with open(path, 'rb') as f:
@@ -48,3 +49,9 @@ enamldef ATModelNotebook(MainWindow):
                     title = 'Substitution'
                     closable = False
                     tool_tip = 'Substitution models'
+            Conditional:
+                condition << len(model.imodels) > 0
+                IndelModelsTab:
+                    title = 'Indel'
+                    closable = False
+                    tool_tip = 'Indel models'

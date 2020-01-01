@@ -1,0 +1,29 @@
+from enamlx.widgets.table_view import (
+    TableView, TableViewRow, TableViewItem
+)
+from enaml.core.api import Conditional, Looper
+
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+from enaml.widgets.menu import Menu
+from enaml.widgets.action import Action
+
+from partitions_tab import PartitionsTab
+from indel_model_view import IndelModelView
+from qt_list_str_widget import QtListStrWidget
+
+from enaml.layout.api import grid, hbox, vbox, spacer
+
+enamldef IndelModelsTab(Page):
+    Container:
+        constraints = [ hbox(li,vbox(imv,spacer(0))) ]
+        QtListStrWidget: li:
+            items << [index for index in range(len(model.imodels))] if model.smodels else []
+            to_string << lambda index : 'I{}'.format(index+1)
+            sort = False
+        IndelModelView: imv:
+            imodel := model.imodels[li.selected_item]
+

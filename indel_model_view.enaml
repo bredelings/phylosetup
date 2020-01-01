@@ -1,0 +1,18 @@
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+
+enamldef IndelModelView(Form):
+    attr imodel
+    Label:
+        text = 'Name:'
+    Label:
+        text << imodel.name
+    Label:
+        text = 'Model:'
+    Field:
+        text := imodel.model
+
+
