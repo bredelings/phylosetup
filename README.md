@@ -19,3 +19,4 @@ workon phylosetup
 python partition.py
 ```
 
+You should then be able to load the file `data/25-muscle.fasta`.
