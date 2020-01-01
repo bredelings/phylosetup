@@ -46,9 +46,13 @@ class SubstitutionModel(Atom):
     alphabet = Str()
 
 class IndelModel(Atom):
+    name = Str()
+
     model = Str()
 
 class ScaleModel(Atom):
+    name = Str()
+
     model = Str()
 
 class Alphabet(Atom):
@@ -59,6 +63,15 @@ class BranchLengthModel(Atom):
 
 class TaxonSet(Atom):
     taxa = ContainerList(Str)
+
+def default_smodel_for_alphabet(alphabet):
+    smodel = None
+    if alphabet == "DNA" or alphabet == "RNA":
+        smodel = 'tn93'
+    elif alphabet == "Amino Acids":
+        smodel = 'lg08'
+    return smodel;
+
 
 class ATModel(Atom):
     """A collection of partitions that can share models
@@ -73,25 +86,29 @@ class ATModel(Atom):
 
     # branch_lengths = BranchLengthModel()
     def add_partition(self, filename, sequences, alpha):
-        smodel = None
         sname = 'S{}'.format(len(self.smodels)+1)
-        if alpha == "DNA" or alpha == "RNA":
-            smodel = len(self.smodels)
-            # We could in theory refuse to pick a substitution model, but then we are delegating to bali-phy
-            # what the priors would be
-            self.smodels.append(SubstitutionModel(name = sname, model='tn93',alphabet=alpha))
-        elif alpha == "Amino Acids":
-            smodel = len(self.smodels)
-            self.smodels.append(SubstitutionModel(name = sname, model='lg08',alphabet=alpha))
+        smodel_index = len(self.smodels)
+        smodel = default_smodel_for_alphabet(alpha)
+        self.smodels.append(SubstitutionModel(name = sname, model=smodel,alphabet=alpha))
 
+        iname = 'I{}'.format(len(self.imodels)+1)
         imodel = len(self.imodels)
-        self.imodels.append(IndelModel(model='rs07'))
+        imodel_index = len(self.imodels)
+        self.imodels.append(IndelModel(name = iname, model='rs07'))
 
+        rname = 'R{}'.format(len(self.scales)+1)
         scale = len(self.scales)
-        self.scales.append(ScaleModel(model='~gamma[0.5,2]'))
+        scale_index = len(self.scales)
+        self.scales.append(ScaleModel(name = rname, model='~gamma[0.5,2]'))
 
         pname = 'P{}'.format(len(self.partitions)+1)
-        partition = Partition(name = pname, sequences = sequences, filename = filename, alphabet = alpha, substitution_model = smodel, indel_model = imodel, scale_model = scale)
+        partition = Partition(name = pname,
+                              sequences = sequences,
+                              filename = filename,
+                              alphabet = alpha,
+                              substitution_model = smodel_index,
+                              indel_model = imodel_index,
+                              scale_model = scale_index)
         self.partitions.append(partition)
 
     def remove_partition(self):

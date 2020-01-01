@@ -134,17 +134,17 @@ enamldef PartitionsTab(Page):
                         text << str(len(partition.sequences))
 
                     TableViewItem:
-                        text << 'S{}'.format(partition.substitution_model+1)
+                        text << model.smodels[partition.substitution_model].name
                         double_clicked :: print("Double clicked %s"%partition.substitution_model)
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
 
                     TableViewItem:
-                        text << model.imodels[partition.indel_model].model if not partition.fixed_alignment else 'none'
+                        text << model.imodels[partition.substitution_model].name
                         double_clicked :: print("Double clicked %s"%partition.indel_model)
                         selected :: print("Selection %s is now %s"%(partition.indel_model,change['value']))
 
                     TableViewItem:
-                        text << model.scales[partition.scale_model].model
+                        text << model.scales[partition.scale_model].name
                         double_clicked :: print("Double clicked %s"%partition.scale_model)
                         selected :: print("Selection %s is now %s"%(partition.scale_model,change['value']))
         PushButton: pb1:
