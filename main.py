@@ -20,6 +20,7 @@ class Partition(Atom):
     # FIXME: what about "how many taxa?"
     # Some of these things can be computed from atmodel and shown in the table
 
+    # These may include '-' characters, but should not
     def sequence_lengths(self):
         return [len(x.seq) for x in self.sequences]
 
@@ -28,6 +29,11 @@ class Partition(Atom):
 
     def max_length(self):
         return max(self.sequence_lengths())
+
+    def taxa(self):
+        t = [x.id for x in self.sequences]
+        t.sort()
+        return t
 
     name = Str()
 
@@ -118,6 +124,11 @@ class ATModel(Atom):
                               substitution_model = smodel_index,
                               indel_model = imodel_index,
                               scale_model = scale_index)
+
+        if len(self.partitions) > 0 and partition.taxa() != self.partitions[0].taxa():
+            print("Taxon set does not match!")
+            return
+
         self.partitions.append(partition)
 
     def remove_partition(self):
