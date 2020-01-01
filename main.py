@@ -124,6 +124,15 @@ class ATModel(Atom):
         if len(self.partitions) > 0:
             self.partitions.pop()
 
+    # remove a specific partition
+    # we will need to adjust _names_ for later partitions
+
+    # remove a specific substitution model
+    # we will need to adjust _names_ for later models
+
+    # remove a specific indel model
+    # we will need to adjust _names_ for later models
+
 
 def main():
 
