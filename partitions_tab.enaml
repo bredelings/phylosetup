@@ -139,7 +139,7 @@ enamldef PartitionsTab(Page):
                         selected :: print("Selection %s is now %s"%(partition.substitution_model,change['value']))
 
                     TableViewItem:
-                        text << model.imodels[partition.substitution_model].name
+                        text << model.imodels[partition.substitution_model].name if not partition.fixed_alignment else 'none'
                         double_clicked :: print("Double clicked %s"%partition.indel_model)
                         selected :: print("Selection %s is now %s"%(partition.indel_model,change['value']))
 
