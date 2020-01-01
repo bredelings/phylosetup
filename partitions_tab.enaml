@@ -84,10 +84,11 @@ def guess_alphabet(sequences):
 
 enamldef PartitionsTab(Page):
     attr model
+
     Container:
         TableView: table:
             minimum_size = (640,360)
-            horizontal_headers << ['Name', 'Filename', 'Fixed', 'Alphabet', '#Taxa', 'Substitution', 'Indel', 'Scale']
+            horizontal_headers << ['Name', 'Filename', 'Fixed', 'Lengths', 'Alphabet', '#Taxa', 'Substitution', 'Indel', 'Scale']
             horizontal_stretch = True
             show_vertical_header = False
             items << model.partitions
@@ -124,6 +125,9 @@ enamldef PartitionsTab(Page):
                             checked := partition.fixed_alignment
                         double_clicked :: print("Double clicked %s"%partition.fixed_alignment)
                         selected :: print("Selection %s is now %s"%(partition.fixed_alignment,change['value']))
+
+                    TableViewItem:
+                        text << '{} - {}'.format(partition.min_length(), partition.max_length())
 
                     TableViewItem:
                         text := partition.alphabet

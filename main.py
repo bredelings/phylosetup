@@ -20,6 +20,15 @@ class Partition(Atom):
     # FIXME: what about "how many taxa?"
     # Some of these things can be computed from atmodel and shown in the table
 
+    def sequence_lengths(self):
+        return [len(x.seq) for x in self.sequences]
+
+    def min_length(self):
+        return min(self.sequence_lengths())
+
+    def max_length(self):
+        return max(self.sequence_lengths())
+
     name = Str()
 
     sequences = ContainerList(Bio.SeqRecord.SeqRecord)
