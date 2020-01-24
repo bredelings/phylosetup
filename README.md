@@ -19,7 +19,7 @@ It might be necessary to install the apt-based packages _before_ doing the `pip 
 
 ```
 workon phylosetup
-python partition.py
+./main.py
 ```
 
 You should then be able to load the file `data/25-muscle.fasta`.
