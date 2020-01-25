@@ -104,6 +104,8 @@ class ATModel(Atom):
         sname = 'S{}'.format(len(self.smodels)+1)
         smodel_index = len(self.smodels)
         smodel = default_smodel_for_alphabet(alpha)
+        if smodel is None:
+            raise ValueError(f"SModel for alphabet '{alpha}' unknown")
         self.smodels.append(SubstitutionModel(name = sname, model=smodel,alphabet=alpha))
 
         iname = 'I{}'.format(len(self.imodels)+1)

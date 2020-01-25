@@ -165,6 +165,8 @@ enamldef PartitionsTab(Page):
                         for sequence in SeqIO.parse(path,format='fasta'):
                             sequences.append(sequence)
                         alphabet = guess_alphabet(sequences)
+                        if alphabet is None:
+                            raise ValueError("Couldn't guess alphabet for file '{}'".format(path))
                         # FIXME: really we should let the use check this:
                         # [ File: [chosen name]  Alphabet: [DNA]  Sites: [all] ]
                         model.add_partition(path, sequences, alphabet)
