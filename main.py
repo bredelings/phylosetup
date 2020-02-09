@@ -12,6 +12,12 @@ from enaml.qt.qt_application import QtApplication
 
 from generic_model import GenericModel
 
+# TODO: For alphabets, determine a SET of allowed alphabets when we load a partition.
+#       Make the alphabet a ComboBox, so that the use can select an alphabet.
+#       Maybe grey-out the Doublets, Codons, or Triplets, of they fail the criteria,
+#          and then explain why Triplets or Codons are not an option, when the use mouses over that.
+#       When we are selecting between models, show rate matrices for ANY of the alphabets??
+
 class Partition(Atom):
     """ A simple class representing a partition in a phylogenetic analysis.
 
