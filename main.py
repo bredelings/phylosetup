@@ -6,9 +6,11 @@ import Bio.SeqRecord
 import enamlx
 enamlx.install()
 
-from atom.api import Atom, Str, Range, Bool, Value, Int, Tuple, observe, ContainerList
+from atom.api import Atom, Str, Range, Bool, Value, Int, Tuple, observe, ContainerList, ForwardTyped, Typed
 import enaml
 from enaml.qt.qt_application import QtApplication
+
+from generic_model import GenericModel
 
 class Partition(Atom):
     """ A simple class representing a partition in a phylogenetic analysis.
@@ -53,12 +55,16 @@ class Partition(Atom):
 
     scale_model = Int()
 
+
 class SubstitutionModel(Atom):
     name = Str()
 
     model = Str()
 
     alphabet = Str()
+
+    model2 = Typed(GenericModel)
+
 
 class IndelModel(Atom):
     name = Str()
@@ -106,7 +112,7 @@ class ATModel(Atom):
         smodel = default_smodel_for_alphabet(alpha)
         if smodel is None:
             raise ValueError(f"SModel for alphabet '{alpha}' unknown")
-        self.smodels.append(SubstitutionModel(name = sname, model=smodel,alphabet=alpha))
+        self.smodels.append(SubstitutionModel(name = sname, model=smodel, alphabet=alpha, model2=GenericModel(func=smodel,args=[GenericModel(func="1")])))
 
         iname = 'I{}'.format(len(self.imodels)+1)
         imodel = len(self.imodels)

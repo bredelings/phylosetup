@@ -1,0 +1,62 @@
+from enaml.widgets.api import (
+    Window, Label, Field, Form, DateSelector, CheckBox, GroupBox, Container,
+    PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
+)
+
+from enaml.core.api import Conditional, Looper
+
+from enaml.styling import (
+    StyleSheet, Style, Setter
+)
+
+# See https://groups.google.com/forum/#!topic/enaml/GV9kWUkZtvI
+# See https://readthedocs.org/projects/enaml/downloads/pdf/latest/
+
+from generic_model import GenericModel
+
+from enaml.layout.api import grid, hbox, vbox, spacer
+
+enamldef ModelView(Container): me:
+    attr model
+
+    constraints = [ hbox(f1,l1,cont,l2,pb1,pb2) ]
+
+    StyleSheet:
+        Style:
+            element = 'PushButton'
+            Setter:
+                field = 'color'
+                value = 'blue'
+                
+
+    Field: f1:
+        text := model.func
+        hug_width = 'strong'
+
+    Label: l1:
+        text = "["
+        hug_width = 'strong'
+    Container:cont:
+        Looper: loop:
+            iterable << model.args
+            Label:
+                text << loop_item.as_string()
+                hug_width = 'strong'
+    Label: l2:
+        text = "]"
+        hug_width = 'strong'
+    PushButton: pb1:
+        text = "+"
+        hug_width = 'strong'
+        clicked::
+            model.args.append(GenericModel(func="",args=[]))
+            print(model.as_string())
+            loop.refresh_items()
+    PushButton: pb2:
+        text = "-"
+        hug_width = 'strong'
+        clicked::
+            model.args.pop()
+            print(model.as_string())
+            loop.refresh_items()
+           

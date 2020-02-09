@@ -3,6 +3,7 @@ from enaml.widgets.api import (
     PushButton, MainWindow, MenuBar, Notebook, Page, FileDialogEx, ToolBar, ActionGroup, Action, VGroup, ObjectCombo
 )
 
+from model_view import ModelView
 
 enamldef SubstitutionModelView(Form):
     attr smodel
@@ -13,6 +14,8 @@ enamldef SubstitutionModelView(Form):
     Label:
         text = 'Model:'
     Field:
-        text := smodel.model
-
-
+        text << smodel.model2.as_string()
+    ModelView:
+        model := smodel.model2
+# how to run something when ModelView sends a signal or something?
+# how to force Field.text to update?
